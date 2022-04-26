@@ -4,25 +4,19 @@ const translate = (text) => 'bla bla bla';
 
 const morseDictionary = {
   A: '.-',
-  B: '...-',
+  B: '-...',
   C: '-.-.',
+  T: '-',
   "#": '     ',
   '##': '#'
 }
 
 const germanDictionary = {
-  'Cat': 'Katze',
+  'CAT': 'Katze',
   'Dog': 'Hund',
   '#': '     ',
   '##': 'BLA'
 }
-
-
-button.addEventListener('click', () => {
-  const textToTranslate = document.getElementById('text-to-translate').innerHTML;
-  const translatedText = document.getElementById('translated-text')
-  translatedText.innerHTML = translate(textToTranslate)
-})
 
 class Translator {
   constructor(inputLanguage, outputLanaguage) {
@@ -47,6 +41,7 @@ class Translator {
         /*dictionary[wordOrChar] ? dictionary[wordOrChar] : dictionary['##']*/
         dictionary[wordOrChar] || dictionary['##']
       ).join(' ')
+      return this.outputText;
   }
 }
 
@@ -62,8 +57,8 @@ class Morse extends Translator {
 
   //static typeOfTranslation = 'byChar';
 
-  translate(/*inputText*/) {
-    const inputText = 'abc abcd'
+  translate(inputText) {
+    //const inputText = 'abc abcd'
     const inputArr = [
       ...inputText.toUpperCase()
         .split(' ')
@@ -84,16 +79,28 @@ class German extends Translator {
 
   //static typeOfTranslation = 'byWord';
 
-  translate(/*inputText*/) {
-    const inputArr = ['Cat']
+  translate(inputText) {
+    //const inputArr = ['Cat']
     super.translate(inputArr, this.dictionary)
   }
 }
 
-const translator = new Morse();
-translator.translate();
-console.log(translator.outputText);
+button.addEventListener('click', () => {
+  const textToTranslate = document.getElementById('text-to-translate').value;
+  const translatedText = document.getElementById('translated-text')
+  const languageSelected = document.getElementById('languageForTranslation').value;
+  let translator;
+  if (languageSelected === 'Morse') {
+    translator = new Morse();
+    //translator.translate(textToTranslate);
+    //console.log(translator.outputText);
+  }
+  if (languageSelected === 'German') {
+    translator = new German();
+    //gTranslator.translate(textToTranslate);
+    //console.log(gTranslator.outputText);
+  }
+  translator.translate(textToTranslate);
+  translatedText.innerHTML = translator.outputText;
+})
 
-const gTranslator = new German();
-gTranslator.translate();
-console.log(gTranslator.outputText);
